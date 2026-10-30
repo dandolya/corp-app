@@ -1,10 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
 
 	"github.com/dandolya/corp-app/internal/config"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func main() {
@@ -13,5 +14,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(cfg.HTTPAddr)
+	ctx := context.Background()
+
+	pool, err := pgxpool.New(ctx, cfg.DBURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer pool.Close()
+
+	if err := pool.Ping(ctx); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("connected")
 }
