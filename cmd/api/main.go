@@ -1,7 +1,17 @@
 package main
 
-//import "?"
+import (
+	"fmt"
+	"log"
+
+	"github.com/dandolya/corp-app/internal/config"
+)
 
 func main() {
-	print("Hello World!")
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(cfg.HTTPAddr)
 }
