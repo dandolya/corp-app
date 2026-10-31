@@ -22,14 +22,15 @@ const (
 )
 
 type Request struct {
-	ID          int64
-	Type        Type
-	Status      Status
-	InitiatorID int64
-	TargetID    *int64
-	Details     json.RawMessage
-	CreatedAt   time.Time
-	ExpiresAt   time.Time
-	ResolvedBy  *int64
-	ResolvedAt  *time.Time
+	ID                int64
+	Type              Type
+	Status            Status
+	InitiatorID       int64
+	TargetID          *int64
+	Details           json.RawMessage
+	CreatedAt         time.Time
+	ExpiresAt         time.Time
+	ResolvedBy        *int64
+	ResolvedAt        *time.Time
+	ResolutionComment string
 }

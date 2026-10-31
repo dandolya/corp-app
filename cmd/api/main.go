@@ -4,7 +4,9 @@ import (
 	"context"
 	"log"
 
+	"github.com/dandolya/corp-app/internal/approval"
 	"github.com/dandolya/corp-app/internal/config"
+	"github.com/dandolya/corp-app/internal/db/postgres"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -27,4 +29,12 @@ func main() {
 	}
 
 	log.Println("connected")
+	reqRepo := postgres.NewRequestRepository(pool)
+
+	err = reqRepo.ResolveRequest(ctx, 7, 1, approval.StatusApproved, "") // продавец — ErrNotAllowed
+	log.Println(err)
+	err = reqRepo.ResolveRequest(ctx, 2, 1, approval.StatusApproved, "ок") // директор — nil
+	log.Println(err)
+	err = reqRepo.ResolveRequest(ctx, 1, 1, approval.StatusRejected, "") // CEO, уже решено — ErrAlreadyResolved
+	log.Println(err)
 }
